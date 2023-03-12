@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return ProductsResource::collection(Product::all());
+        return ProductsResource::collection(Product::orderBy('created_at', 'desc')->get());
     }
 
     /**
@@ -31,7 +31,8 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        //
+        Product::create($request->validated());
+        return response()->json(['message' => 'Product created successfully']);
     }
 
     /**
@@ -55,7 +56,8 @@ class ProductController extends Controller
      */
     public function update(UpdateProductRequest $request, Product $product)
     {
-        //
+        $product->update($request->validated());
+        return response()->json(['message' => 'Product updated successfully']);
     }
 
     /**
@@ -63,6 +65,7 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $product->delete();
+        return response()->json(['message' => 'Product deleted successfully']);
     }
 }
